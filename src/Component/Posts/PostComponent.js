@@ -16,4 +16,5 @@ class PostComponent extends Component {
     }
 }
 
+
 export default PostComponent;
