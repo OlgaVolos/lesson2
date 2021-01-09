@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import UserService from "../../../servise/UserService";
+import {Link} from "react-router-dom";
+import Post from "../../posts/post/Post";
 
 class FullUser extends Component {
 
@@ -8,8 +10,8 @@ class FullUser extends Component {
 
     async componentDidMount() {
 
-        let {match:{params:{id}}} = this.props;
-        let user =  await  this.userService.user(id);
+        let {match: {params: {id}}} = this.props;
+        let user = await this.userService.user(id);
         this.setState({user});
 
     }
@@ -19,7 +21,7 @@ class FullUser extends Component {
         let {user} = this.state;
         return (
             <div>
-                {user && <div>{user.id}-{user.name}-{user.username}-{user.email}</div>}
+                {user && <div>{user.id}-{user.name}-{user.username}-{user.email}  <Link to = {<Post/>}>Click</Link></div>}
 
             </div>
         );

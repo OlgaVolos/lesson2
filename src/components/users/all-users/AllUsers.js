@@ -7,16 +7,17 @@ import FullUser from "../full-user/FullUser";
 class AllUsers extends Component {
 
     userService = new UserService();
-    state = {users:[]}
+    state = {users: []};
 
-   async componentDidMount() {
-        let users =  await this.userService.users();
+
+    async componentDidMount() {
+        let users = await this.userService.users();
         this.setState({users});
     }
 
     render() {
         let {users} = this.state;
-        let {match:{url}}= this.props;
+        let {match: {url}} = this.props;
         return (
             <div>
                 {
@@ -24,20 +25,20 @@ class AllUsers extends Component {
                 }
 
 
-            <hr/>
-            <Switch>
-                <Route path={url + '/:id'} render={(props) => {
-                    const {match:{params:{id}}} = props;
+                <hr/>
+                <Switch>
+                    <Route path={url + '/:id'} render={(props) => {
+                        const {match: {params: {id}}} = props;
 
-                    return <FullUser {...props} key={id}/>;
-                }}/>
+                        return <FullUser {...props} key={id}/>;
+                    }}/>
+                </Switch>
 
-            </Switch>
-            <hr/>
+                <hr/>
 
             </div>
         );
     }
 }
 
-export default     withRouter(AllUsers);
+export default withRouter(AllUsers);
