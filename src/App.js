@@ -1,52 +1,82 @@
-import React, {Component} from 'react';
-import AllUsers from "./components/all-users/AllUsers";
-import User from "./components/user/User";
+import React, {useEffect, useReducer, useState} from "react";
 
 
-class App extends Component {
+const reducer = (state, action) =>{
+    switch (action.type) {
+        case "SET_TODO": {
+            return action.payload;
+        }
+        case 'CHANGE_TODO_STATUS': {
+            return {
+                ...state,
+                completed: !state.completed
 
-    state = {users: [], inputValue: '',currentUser: null};
+            };
+        }
+        case 'CHANGE_TODO_TITLE': {
+            return {
+                ...state,
+                title: action.payload
+            };
+        }
+        default: {
+            console.error('didn`t found case for action:' , action )
+            return state;
+        }
+    }
+};
 
-    send = (e) => {
+const initialState = {
+    userId: null,
+    id: null,
+    title: '',
+    completed: false
+};
 
-        e.preventDefault();
 
-        const {users, inputValue} = this.state;
-        const currentUser = users.find(item => item.id === +inputValue)
 
-        this.setState({currentUser})
+ 
+export default function App() {
+
+    const [state, dispatch] = useReducer(reducer, initialState);
+
+    let [counter, setCounter] = useState(1);
+    const onClickHandler = () => {
+        setCounter((prev) => prev +1)
     };
 
-    commitState = (e) => {
-        this.setState({inputValue: e.target.value});
-    }
-
-    componentDidMount() {
-        fetch('https://jsonplaceholder.typicode.com/users')
-            .then(value => value.json())
-            .then(users => {
-                this.setState({users});
-            });
-    }
-
-    render() {
-        const {users,currentUser} = this.state;
-        return (
-
-            <div>
-                <AllUsers items={users}/>
-                <form action={'/savedata'} onSubmit={this.send} >
-                    <input type = "number" onInput={this.commitState} value={this.state.inputValue}/>
-                    <button>send</button>
-                </form>
-                {currentUser && <User user={currentUser}/>}
-            </div>
-
-        );
-    }
+    const changeStatusHandler = () => dispatch({type:'CHANGE_TODO_STATUS'});
+    const changeTitle = () => dispatch({type: 'CHANGE_TODO_TITLE', payload: Math.random()})
 
 
 
+
+
+    useEffect(() => {
+        fetch(`https://jsonplaceholder.typicode.com/todos/${counter}`)
+            .then(value => value.json()).then((json)=> dispatch({type: "SET_TODO", payload: json }));
+    }, [counter]);
+
+
+    return(
+        <div>
+            <button onClick={onClickHandler}>ink</button>
+            <button onClick={changeStatusHandler}>change status</button>
+            <button onClick={changeTitle}>change title</button>
+
+            <h1>Counter value: {counter}</h1>
+            {!!state && (
+                <>
+                <h2>{state.id}</h2>
+                    <h2>{state.title}</h2>
+                    <h2>{state.completed.toString()}</h2>
+
+                </>
+            )}
+
+
+
+        </div>
+    )
+    
 }
-
-export default App;
