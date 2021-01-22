@@ -6,21 +6,31 @@ import reportWebVitals from './reportWebVitals';
 import {createStore} from 'redux'
 import {Provider} from 'react-redux'
 
+
 const initialState = {
-    counter: 0
+    counter: 1,
+    user: {
+        userId: null,
+        id: null,
+        title: '',
+        completed: false
+    }
+
 };
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'INC_COUNTER': {
-            return {...state, counter: state.counter + 1}
-
+        case 'CHANGE_COUNTER': {
+            return {...state, counter: state.counter +1};
         }
-        case 'DEC_COUNTER': {
-            return {...state, counter: state.counter - 1}
+        case 'SET_TODO': {
+            return {...state, user: action.payload}
         }
-        case 'RESET': {
-            return {...state, counter: 0}
+        case 'CHANGE_STATUS': {
+            return {...state, user:{...state.user, completed: !state.user.completed}}
+        }
+        case 'CHANGE_TITLE': {
+            return {...state, user:{...state.user, title: action.payload}}
         }
         default: {
 
