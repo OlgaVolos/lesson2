@@ -1,24 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useEffect} from "react";
+import {useSelector, useDispatch} from 'react-redux';
+import {incCounter,
+  decCounter,
+  resetCounter, fetchTodos} from './redux'
 
 function App() {
+
+  // const counter = useSelector(({counter}) => counter.counter);
+  // const todos = useSelector(({todos}) => todos.todos);
+
+  const {todos, counter} = useSelector(
+  ({counter:{counter}, todos: {todos}}) => ({
+    todos,
+    counter
+  })
+  );
+  // const storeData = useSelector(({counter: {counter}, todos: {todos}}) => ({todos, counter}))
+  const dispatch = useDispatch();
+
+
+
+  useEffect(() => {
+    fetchTodos(dispatch);
+
+  }, [dispatch])
+
+  const handleInc = () => dispatch(incCounter())
+  const handleDec = () => dispatch(decCounter())
+  const handleReset = () => dispatch(resetCounter())
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div>
+        <h1>Hello {counter}</h1>
+        <button onClick={handleInc}>inc</button>
+        <button onClick={handleDec}>dec</button>
+        <button onClick={handleReset}>reset</button>
+          {todos.map((todo) => (
+              <h2>
+                {todo.id} - {todo.title}
+              </h2>
+          ))}
+      </div>
+
   );
 }
 
