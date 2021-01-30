@@ -25,7 +25,7 @@ useEffect(() => {
 }, [dispatch])
     return (
         <div className='App'>
-            {products.length}
+            {/*{products.length}*/}
             <Header />
             <ProductList products={products} />
             {/*<h1>Hello {cart.length} {wishlist.length}</h1>*/}

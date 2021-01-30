@@ -11,7 +11,7 @@ export const Header = (props) => {
         <header className = 'd-flex justify-between align'>
             <h2>Hello in shop</h2>
             <div className = 'd-flex justify-between'>
-            <div className='mx-10'>Wishlist: {wishlist.length}</div>
+            <div className='mx-10' title="wishlist">Wishlist: {wishlist.length}</div>
             <div className='mx-10'>Cart: {cart.length}</div>
         </div>
         </header>
